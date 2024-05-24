@@ -1,4 +1,7 @@
 #include <iostream>
+#include <string>
+#include <stdexcept>
+
 
 #include "../headers/field.hpp"
 
@@ -24,6 +27,14 @@ void clear_terminal() {
 #endif
 }
 
+int get_int(const string& in){
+	try{
+		int n = stoi(in);
+		return n;// return number if conversion happened correctly
+	}catch(const invalid_argument& e){
+		return -1;//invalid position returned
+	}
+}
 
 
 int main() {
@@ -34,6 +45,7 @@ int main() {
 
     bool playing = true;
     int r = -100, c = -100;
+    string input;
     while (playing) {
         if(mf.end_game()){
             break;
@@ -46,10 +58,13 @@ int main() {
         cout << endl;
         cout << "State of the field (# covered; 0 - 8 already clicked)" << endl;
         mf.print();
+
         cout << "Insert the row coordinate 0 - " << side_s << ": ";
-        cin >> r;
+        getline(cin, input);
+	r = get_int(input) ;
         cout << "Insert the column coordinate 0 - " << side_s << ": ";
-        cin >> c;
+        getline(cin, input);
+	c = get_int(input);
         if (mf.place_exists(r, c)) {
             playing = mf.played(r, c);
         }
